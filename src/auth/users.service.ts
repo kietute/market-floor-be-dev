@@ -12,7 +12,9 @@ export class UsersService {
     const user = this.repo.create(payload as User);
     return this.repo.save(user);
   }
-
+  findAll() {
+    return this.repo.find();
+  }
   findOne(id: number) {
     if (!id) {
       return null;
@@ -38,5 +40,13 @@ export class UsersService {
       throw new NotFoundException('user not found');
     }
     return this.repo.delete({ id: id });
+  }
+  async lock(id: number) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    user.isActive = false;
+    return this.repo.save(user);
   }
 }

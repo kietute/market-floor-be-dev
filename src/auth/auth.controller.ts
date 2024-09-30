@@ -16,6 +16,7 @@ import { AuthGuard } from '../common/guards/auth.guard';
 import { User } from '../entities/user.entity';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { VerifyOtpDto } from './dtos/verify-otp.dto';
+import { makeLogger } from 'ts-loader/dist/logger';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -30,6 +31,7 @@ export class AuthController {
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
+
     const user = await this.authService.signup(body);
     return user;
   }
