@@ -24,8 +24,6 @@ import { TenantModule } from './tenant/tenant.module';
 import { Store } from './entities/store.entity';
 import { StoreProduct } from './entities/store-product.entity';
 import { StoreModule } from './store/store.module';
-import { AdminModule } from './admin/admin.module';
-import { StaffModule } from './staff/staff.module';
 
 @Module({
   imports: [
@@ -61,8 +59,7 @@ import { StaffModule } from './staff/staff.module';
         };
       },
     }),
-    AdminModule,
-    StaffModule,
+
     AuthModule,
     AddressesModule,
     ProductsModule,
