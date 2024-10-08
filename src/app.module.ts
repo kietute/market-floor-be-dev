@@ -35,12 +35,16 @@ import { StoreModule } from './store/store.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
+          ssl: {
+            rejectUnauthorized: false,
+          },
           type: 'postgres',
           database: config.get<string>('PROJECT_DB_NAME'),
           username: config.get<string>('PROJECT_DB_USER'),
           password: config.get<string>('PROJECT_DB_PASSWORD'),
-          host: 'localhost',
-          port: 5432,
+          host: config.get<string>('PROJECT_DB_HOST'),
+          url: config.get<string>('PROJECT_DB_URL'),
+          port: Number(config.get<string>('PROJECT_DB_PORT')),
           entities: [
             User,
             UserDevice,
