@@ -63,6 +63,7 @@ import { StoreModule } from './store/store.module';
         };
       },
     }),
+
     AuthModule,
     AddressesModule,
     ProductsModule,
