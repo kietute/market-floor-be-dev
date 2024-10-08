@@ -23,8 +23,8 @@ export class UserDto {
   addresses: Array<any>;
 
   @Expose()
-  accessToken: string;
+  role: string;
 
   @Expose()
-  refreshToken: string;
+  isActive: boolean;
 }

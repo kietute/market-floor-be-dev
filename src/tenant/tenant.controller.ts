@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Session, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import { Serialize } from '../common/interceptors/serialize.interceptor';
 import { AdminDto } from './dtos/tenant.dto';
 import { SignInStaffDto } from './dtos/signin-staff.dto';
@@ -37,41 +47,30 @@ export class TenantController {
     session.userId = null;
   }
 
-  @Get()
+  @Get('/users')
   @Serialize(UserDto)
   @UseGuards(StaffGuard)
-  getAll(
-    @CurrentUser() currentUser: User
-  ) {
+  getAll(@CurrentUser() currentUser: User) {
     return this.tenantService.findAll(currentUser); // Không cần tham số phân trang
   }
 
   @Get(':id')
   @Serialize(UserDto)
   @UseGuards(StaffGuard)
-  getUser(
-    @Param('id') id: number,
-    @CurrentUser() currentUser: User
-  ) {
+  getUser(@Param('id') id: number, @CurrentUser() currentUser: User) {
     return this.tenantService.findOne(id, currentUser);
   }
 
   @Put(':id/lock')
   @Serialize(UserDto)
   @UseGuards(StaffGuard)
-  async lockUser(
-    @Param('id') id: number,
-    @CurrentUser() currentUser: User
-  ) {
+  async lockUser(@Param('id') id: number, @CurrentUser() currentUser: User) {
     return this.tenantService.lock(id, currentUser);
   }
 
   @UseGuards(AdminGuard)
   @Delete(':id')
-  async removeUser(
-    @Param('id') id: number,
-    @CurrentUser() currentUser: User
-  ) {
+  async removeUser(@Param('id') id: number, @CurrentUser() currentUser: User) {
     return this.tenantService.remove(id, currentUser);
   }
 }

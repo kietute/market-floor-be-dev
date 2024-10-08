@@ -1,5 +1,6 @@
 import {
-  BadRequestException, ForbiddenException,
+  BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -50,6 +51,10 @@ export class TenantService {
       throw new NotFoundException('User not found');
     }
 
+    if (user.role == 'user') {
+      throw new ForbiddenException('User cannot login to admin site');
+    }
+
     const [salt, storedHash] = user.password.split('.');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
@@ -74,7 +79,6 @@ export class TenantService {
     };
   }
   async findAll(currentUser: User) {
-
     if (currentUser.role === UserRole.STAFF) {
       return this.userUservice.findAllByRole(UserRole.USER); // Staff chỉ xem User
     }
