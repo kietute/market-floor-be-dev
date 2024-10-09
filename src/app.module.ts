@@ -29,7 +29,8 @@ import { StoreModule } from './store/store.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.development`,
+      envFilePath:
+        process.env.NODE_ENV !== 'production' ? `.env.development` : '.env',
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -58,7 +59,7 @@ import { StoreModule } from './store/store.module';
             Store,
             StoreProduct,
           ],
-          synchronize: true,
+          synchronize: process.env.NODE_ENV !== 'production',
           namingStrategy: new SnakeNamingStrategy(),
         };
       },
