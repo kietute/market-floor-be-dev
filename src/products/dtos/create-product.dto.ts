@@ -15,9 +15,11 @@ class ProductPriceDto {
   @IsString()
   displayPrice: string;
 
+  @IsOptional()
   @IsNumber()
   salePrice: number;
 
+  @IsOptional()
   @IsString()
   displaySalePrice: string;
 }
@@ -33,20 +35,24 @@ export class CreateProductDto {
   @Type(() => ProductPriceDto)
   price: ProductPriceDto;
 
+  @IsOptional()
   @IsBoolean()
   isOnSale: boolean;
 
+  @IsOptional()
   @IsString()
   fullDescription: string;
 
+  @IsOptional()
   @IsString()
   shortDescription: string;
 
+  @IsOptional()
   @IsString()
   nutritionInformations: string;
 
   @IsNumber()
-  cateogryId: number;
+  categoryId: number;
 
   @IsOptional()
   @IsArray()

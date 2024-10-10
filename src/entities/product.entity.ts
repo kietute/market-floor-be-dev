@@ -14,8 +14,8 @@ import { StoreProduct } from './store-product.entity';
 export interface IProductPrice {
   price: number;
   displayPrice: string;
-  salePrice: number;
-  displaySalePrice: string;
+  salePrice?: number;
+  displaySalePrice?: string;
 }
 
 @Entity()
@@ -39,10 +39,10 @@ export class Product {
   @Column()
   fullDescription: string;
 
-  @Column()
+  @Column({ nullable: true })
   shortDescription: string;
 
-  @Column()
+  @Column({ nullable: true })
   nutritionInformations: string;
 
   @ManyToOne(() => Category, (category) => category.products)
@@ -54,9 +54,11 @@ export class Product {
   @OneToMany(() => StoreProduct, (storeProduct) => storeProduct.product)
   storeProducts: StoreProduct[];
 
+  @Column({ nullable: true })
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column({ nullable: true })
   @UpdateDateColumn()
   updatedAt: Date;
 }
