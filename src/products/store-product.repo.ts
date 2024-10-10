@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StoreProduct } from 'src/entities/store-product.entity';
-import { GetProductDto } from './dtos/get-product.dto';
+import { GetStoreProductDto } from './dtos/get-product.dto';
 
 @Injectable()
 export class StoreProductRepo {
@@ -35,7 +35,7 @@ export class StoreProductRepo {
     return this.repo.findOne({ where: { id } });
   }
 
-  async getAll(params: GetProductDto) {
+  async getAll(params: GetStoreProductDto) {
     const queryBuilder = this.repo.createQueryBuilder('store_product');
 
     this.applyFilters(queryBuilder, params);
