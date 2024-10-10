@@ -13,7 +13,7 @@ import { ProductService } from './products.service';
 import { StaffGuard } from 'src/common/guards/staff.guard';
 import { LinkProductDto } from './dtos/link-product.dto';
 import { AdminGuard } from 'src/common/guards/admin.guard';
-import { GetProductDto } from './dtos/get-product.dto';
+import { GetStoreProductDto, GetTenentProductDto } from './dtos/get-product.dto';
 
 @Controller('/products')
 export class ProductsContoller {
@@ -26,6 +26,13 @@ export class ProductsContoller {
     return product;
   }
 
+  @UseGuards(AdminGuard)
+  @Get('/')
+  async getAllProduct(@Body() body: GetTenentProductDto) {
+    const product = await this.productService.getTenantProducts(body);
+    return product;
+  }
+
   @UseGuards(StaffGuard)
   @Post('/link-to-store')
   async linkProductToStore(@Body() body: LinkProductDto) {
@@ -34,7 +41,7 @@ export class ProductsContoller {
   }
 
   @Get('/by-store')
-  async getProductsByStore(@Query() query: GetProductDto) {
+  async getProductsByStore(@Query() query: GetStoreProductDto) {
     const products = await this.productService.getStoreProducts(query);
     return products;
   }
