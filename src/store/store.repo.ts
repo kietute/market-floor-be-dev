@@ -13,6 +13,10 @@ export class StoreRepo {
     return this.repo.save(store);
   }
 
+  async findAll() {
+    return this.repo.find();
+  }
+
   findById(id: number) {
     return this.repo.findOneBy({ id: id });
   }

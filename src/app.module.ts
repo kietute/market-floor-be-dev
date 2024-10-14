@@ -15,7 +15,6 @@ import { ProductsModule } from './products/products.module';
 import { Product } from './entities/product.entity';
 import { Category } from './entities/category.entity';
 import { Bid } from './entities/bid.entity';
-import { ProductImage } from './entities/product-image';
 
 import { NotificationModule } from './notification/notification.module';
 import { OtpCode } from './entities/otp-code.dto';
@@ -53,7 +52,6 @@ import { StoreModule } from './store/store.module';
             Product,
             Category,
             Bid,
-            ProductImage,
             OtpCode,
             Tenant,
             Store,

@@ -28,4 +28,14 @@ export class StoreService {
       throw new ServiceUnavailableException('Internal server error');
     }
   }
+
+  async getStores() {
+    try {
+      const stores = await this.storeRepo.findAll();
+      return stores;
+    } catch (error) {
+      console.log('get stores error', error);
+      throw new ServiceUnavailableException('Internal server error');
+    }
+  }
 }

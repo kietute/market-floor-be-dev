@@ -1,5 +1,6 @@
 import {
-  BadRequestException, ForbiddenException,
+  BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -65,6 +66,8 @@ export class TenantService {
       role: user.role,
     };
 
+    console.log('user', user);
+
     return {
       ...user,
       accessToken: this.jwtService.sign(jwtPayload, { expiresIn: '1d' }),
@@ -74,7 +77,6 @@ export class TenantService {
     };
   }
   async findAll(currentUser: User) {
-
     if (currentUser.role === UserRole.STAFF) {
       return this.userUservice.findAllByRole(UserRole.USER); // Staff chỉ xem User
     }
