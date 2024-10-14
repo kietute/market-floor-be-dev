@@ -51,6 +51,10 @@ export class TenantService {
       throw new NotFoundException('User not found');
     }
 
+    if (user.role == 'user') {
+      throw new ForbiddenException('User cannot login to admin site');
+    }
+
     const [salt, storedHash] = user.password.split('.');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 

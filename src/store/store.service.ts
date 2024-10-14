@@ -1,11 +1,17 @@
 import {
+  BadRequestException,
   Injectable,
+  NotFoundException,
   ServiceUnavailableException,
   UseGuards,
 } from '@nestjs/common';
 import { StoreRepo } from './store.repo';
 import { CreateStoreDto } from './dtos/create-store.dto';
 import { AdminGuard } from 'src/common/guards/admin.guard';
+import { Store } from '../entities/store.entity';
+import { GetStoreDto } from './dtos/get-store.dto';
+import { UpdateStoreDto } from './dtos/update-store.dto';
+import { DeleteResult } from 'typeorm';
 
 @UseGuards(AdminGuard)
 @Injectable()
@@ -28,8 +34,40 @@ export class StoreService {
       throw new ServiceUnavailableException('Internal server error');
     }
   }
+  async getStores(
+    params: GetStoreDto,
+  ): Promise<{ data: Store[]; total: number }> {
+    return this.storeRepo.findAll(params);
+  }
+  async getStoreById(id: number): Promise<Store> {
+    const store = await this.storeRepo.findById(id);
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+    return store;
+  }
 
-  async getStores() {
+  async update(id: number, payload: UpdateStoreDto): Promise<Store> {
+    const store = await this.storeRepo.findById(id);
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+    Object.assign(store, payload);
+    return this.storeRepo.save(store);
+  }
+
+  async remove(id: number): Promise<DeleteResult> {
+    const user = await this.storeRepo.findById(id);
+
+    if (!user) {
+      throw new NotFoundException('Store not found');
+    }
+
+    // Xóa user nếu không phải là chính mình
+    return this.storeRepo.remove(id);
+  }
+
+  async getAllStores() {
     try {
       const stores = await this.storeRepo.findAll();
       return stores;
