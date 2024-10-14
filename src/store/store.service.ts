@@ -12,44 +12,28 @@ import { Store } from '../entities/store.entity';
 import { GetStoreDto } from './dtos/get-store.dto';
 import { UpdateStoreDto } from './dtos/update-store.dto';
 import { DeleteResult } from 'typeorm';
-import { AddressService } from '../addresses/addresses.service'; // Nhập AddressService
 
 @UseGuards(AdminGuard)
 @Injectable()
 export class StoreService {
-  constructor(
-    private readonly storeRepo: StoreRepo,
-    private readonly addressService: AddressService, // Inject AddressService
-  ) {}
+  constructor(private readonly storeRepo: StoreRepo) {}
 
   async createStore(payload: CreateStoreDto) {
     try {
-      let savedAddress = null;
-
-      // Kiểm tra xem có địa chỉ trong payload không
-      if (payload.address) {
-        savedAddress = await this.addressService.createAddress(payload.address);
-        console.log('Saved Address:', savedAddress); // Kiểm tra giá trị trả về
+      const store = await this.storeRepo.create(payload);
+      if (!store) {
+        console.log('error creating store', store);
+        throw new ServiceUnavailableException(
+          'Cannot create store at the moment',
+        );
+      } else {
+        return store;
       }
-
-      // Tạo store mới mà không bao gồm address
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { address, ...storeData } = payload; // Tách địa chỉ ra khỏi payload
-      const store = this.storeRepo.create(storeData); // Tạo store với dữ liệu còn lại
-
-      // Gán địa chỉ đã lưu vào store nếu có
-      if (savedAddress) {
-        (await store).address = savedAddress; // Gán địa chỉ cho store
-      }
-
-      // Lưu store vào repo
-      return await this.storeRepo.save(await store);
     } catch (error) {
-      console.error('create store error', error);
+      console.log('creaate store error', error);
       throw new ServiceUnavailableException('Internal server error');
     }
   }
-
   async getStores(
     params: GetStoreDto,
   ): Promise<{ results: Store[]; total: number }> {
@@ -75,9 +59,12 @@ export class StoreService {
 
   async remove(id: number): Promise<DeleteResult> {
     const user = await this.storeRepo.findById(id);
+
     if (!user) {
       throw new NotFoundException('Store not found');
     }
+
+    // Xóa user nếu không phải là chính mình
     return this.storeRepo.remove(id);
   }
 }

@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -37,8 +36,7 @@ export class Store {
 
   @Column({ nullable: true, type: 'float' })
   lat: number;
-  @OneToOne(() => Address)
-  @JoinColumn({ name: 'address_id' }) // This specifies the foreign key column in the Store table
+  @OneToOne(() => Address, (address) => address.store)
   address: Address;
 
   @OneToMany(() => StoreProduct, (storeProduct) => storeProduct.store)

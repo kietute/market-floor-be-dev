@@ -10,7 +10,7 @@ export class StoreRepo {
   constructor(@InjectRepository(Store) private repo: Repository<Store>) {}
 
   create(payload: CreateStoreDto) {
-    const store = this.repo.create(payload);
+    const store = this.repo.create(payload as any);
     return this.repo.save(store);
   }
 
@@ -32,9 +32,6 @@ export class StoreRepo {
   ): Promise<{ results: Store[]; total: number }> {
     const queryBuilder = this.repo.createQueryBuilder('store');
 
-    // Thêm join với bảng address
-    queryBuilder.leftJoinAndSelect('store.address', 'address'); // Thêm quan hệ 'address'
-
     // filter if have name
     if (params.name) {
       queryBuilder.andWhere('store.name LIKE :name', {
@@ -42,11 +39,10 @@ export class StoreRepo {
       });
     }
 
-    // Tính khoảng cách nếu có currentLng và currentLat
     if (params.currentLng && params.currentLat) {
       const currentLng = params.currentLng;
       const currentLat = params.currentLat;
-
+      // caculate distance
       queryBuilder.addSelect(
         `
       (3959 * acos(cos(radians(${currentLat})) 
@@ -60,7 +56,7 @@ export class StoreRepo {
       queryBuilder.orderBy('distance', 'ASC');
     }
 
-    // Pagination
+    // pagination
     const page = params.page ?? 1;
     const pageSize = params.pageSize ?? 10;
     const skip = (page - 1) * pageSize;
