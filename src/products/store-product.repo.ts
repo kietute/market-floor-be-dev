@@ -15,14 +15,25 @@ export class StoreProductRepo {
     queryBuilder: SelectQueryBuilder<StoreProduct>,
     params: any,
   ): void {
+    const { keyword, storeId, name } = params;
+
     queryBuilder.andWhere('store_id = :storeId', {
-      storeId: params.storeId,
+      storeId: storeId,
     });
 
-    if (params.name) {
+    if (name) {
       queryBuilder.andWhere('name LIKE :name', {
-        name: `%${params.name}%`,
+        name: `%${name}%`,
       });
+    }
+
+    if (keyword) {
+      queryBuilder.andWhere(
+        '(name LIKE :keyword OR description LIKE :keyword OR other_field LIKE :keyword)',
+        {
+          keyword: `%${keyword}%`,
+        },
+      );
     }
   }
 

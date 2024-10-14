@@ -103,3 +103,10 @@ export class UpdateProductDto {
   @IsString()
   thumbnail: string;
 }
+
+export class BulkProductDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductDto)
+  products: CreateProductDto[];
+}

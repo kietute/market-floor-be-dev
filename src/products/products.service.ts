@@ -5,7 +5,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { ProductRepo } from './products.repo';
-import { CreateProductDto, UpdateProductDto } from './dtos/create-product.dto';
+import { CreateProductDto, UpdateProductDto } from './dtos/product.dto';
 import { LinkProductDto } from './dtos/link-product.dto';
 import { StoreProductRepo } from './store-product.repo';
 import { StoreRepo } from 'src/store/store.repo';
@@ -65,7 +65,7 @@ export class ProductService {
       const product = await this.productRepo.findOne(id);
       if (!product) {
         throw new NotFoundException('Product not found');
-      } else{
+      } else {
         return this.productRepo.delete(id);
       }
     } catch (error) {

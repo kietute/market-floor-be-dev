@@ -1,10 +1,15 @@
-import { IsOptional, IsNumber, Min } from 'class-validator';
+import { IsOptional, IsNumber, Min, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetStoreProductDto {
   @Type(() => Number)
   @IsNumber()
   storeId: number;
+
+  @IsOptional()
+  @IsString()
+  @Type(() => String)
+  name?: string;
 
   @IsOptional()
   @Type(() => Number)

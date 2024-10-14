@@ -9,7 +9,7 @@ import {
   Query,
   Delete,
 } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from './dtos/create-product.dto';
+import { CreateProductDto, UpdateProductDto } from './dtos/product.dto';
 import { ProductService } from './products.service';
 import { StaffGuard } from 'src/common/guards/staff.guard';
 import { LinkProductDto } from './dtos/link-product.dto';

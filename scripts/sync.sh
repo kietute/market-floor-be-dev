@@ -27,6 +27,6 @@ fi
 
 echo "Start syncing data from backup file: $BACKUP_FILE"
 
-psql -U $PROJECT_DB_USER -h cf980tnnkgv1bp.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com $PROJECT_DB_NAME < $BACKUP_FILE
+psql -U $PROJECT_DB_USER -h $PROJECT_DB_HOST $PROJECT_DB_NAME < $BACKUP_FILE
 
 echo "Data sync completed from file: $BACKUP_FILE"

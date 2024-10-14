@@ -14,7 +14,7 @@ enum CategoryPropertyType {
   text = 'string',
 }
 
-interface ICategoryProperty {
+export interface ICategoryProperty {
   name: string;
   type: CategoryPropertyType;
   options?: Array<string>;
