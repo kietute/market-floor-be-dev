@@ -27,10 +27,4 @@ export class UserDto {
 
   @Expose()
   addresses: Array<any>;
-
-  @Expose()
-  role: string;
-
-  @Expose()
-  isActive: boolean;
 }

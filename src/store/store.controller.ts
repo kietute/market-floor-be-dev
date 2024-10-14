@@ -47,9 +47,4 @@ export class StoreController {
   async removeStore(@Param('id') id: number) {
     return this.storeService.remove(id);
   }
-
-  async getStores() {
-    const stores = await this.storeService.getStores();
-    return stores;
-  }
 }

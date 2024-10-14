@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
 import { CreateStoreDto } from './dtos/create-store.dto';
@@ -13,7 +13,7 @@ export class StoreRepo {
     const store = this.repo.create(payload as any);
     return this.repo.save(store);
   }
-  
+
   save(store: Store): Promise<Store> {
     return this.repo.save(store);
   }
@@ -29,7 +29,7 @@ export class StoreRepo {
   }
   async findAll(
     params: GetStoreDto,
-  ): Promise<{ data: Store[]; total: number }> {
+  ): Promise<{ results: Store[]; total: number }> {
     const queryBuilder = this.repo.createQueryBuilder('store');
 
     // filter if have name
@@ -53,7 +53,7 @@ export class StoreRepo {
         'distance',
       );
 
-      queryBuilder.orderBy('distance', 'ASC'); // sort ascending
+      queryBuilder.orderBy('distance', 'ASC');
     }
 
     // pagination
@@ -61,11 +61,11 @@ export class StoreRepo {
     const pageSize = params.pageSize ?? 10;
     const skip = (page - 1) * pageSize;
 
-    const [data, total] = await queryBuilder
+    const [results, total] = await queryBuilder
       .skip(skip)
       .take(pageSize)
       .getManyAndCount();
 
-    return { data, total };
+    return { results, total };
   }
 }

@@ -36,9 +36,10 @@ export class StoreService {
   }
   async getStores(
     params: GetStoreDto,
-  ): Promise<{ data: Store[]; total: number }> {
+  ): Promise<{ results: Store[]; total: number }> {
     return this.storeRepo.findAll(params);
   }
+
   async getStoreById(id: number): Promise<Store> {
     const store = await this.storeRepo.findById(id);
     if (!store) {
@@ -65,15 +66,5 @@ export class StoreService {
 
     // Xóa user nếu không phải là chính mình
     return this.storeRepo.remove(id);
-  }
-
-  async getAllStores() {
-    try {
-      const stores = await this.storeRepo.findAll();
-      return stores;
-    } catch (error) {
-      console.log('get stores error', error);
-      throw new ServiceUnavailableException('Internal server error');
-    }
   }
 }
