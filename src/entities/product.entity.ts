@@ -8,7 +8,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
-import { ProductImage } from './product-image';
 import { StoreProduct } from './store-product.entity';
 
 export interface IProductPrice {
@@ -48,8 +47,14 @@ export class Product {
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
 
-  @OneToMany(() => ProductImage, (image) => image.product)
-  images: ProductImage[];
+  @Column({ type: 'jsonb', nullable: true })
+  images: string[];
+
+  @Column({ nullable: true })
+  thumbnail: string;
+
+  @Column({ default: true })
+  isAvailable: boolean;
 
   @OneToMany(() => StoreProduct, (storeProduct) => storeProduct.product)
   storeProducts: StoreProduct[];

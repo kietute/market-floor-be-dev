@@ -66,4 +66,14 @@ export class StoreService {
     // Xóa user nếu không phải là chính mình
     return this.storeRepo.remove(id);
   }
+
+  async getAllStores() {
+    try {
+      const stores = await this.storeRepo.findAll();
+      return stores;
+    } catch (error) {
+      console.log('get stores error', error);
+      throw new ServiceUnavailableException('Internal server error');
+    }
+  }
 }

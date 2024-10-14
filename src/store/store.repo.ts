@@ -13,6 +13,7 @@ export class StoreRepo {
     const store = this.repo.create(payload as any);
     return this.repo.save(store);
   }
+  
   save(store: Store): Promise<Store> {
     return this.repo.save(store);
   }
@@ -22,6 +23,7 @@ export class StoreRepo {
     }
     return this.repo.delete({ id: id });
   }
+
   findById(id: number) {
     return this.repo.findOneBy({ id: id });
   }

@@ -36,7 +36,9 @@ export class StoreProductRepo {
   }
 
   async getAll(params: GetStoreProductDto) {
-    const queryBuilder = this.repo.createQueryBuilder('store_product');
+    const queryBuilder = this.repo
+      .createQueryBuilder('store_product')
+      .leftJoinAndSelect('store_product.product', 'product');
 
     this.applyFilters(queryBuilder, params);
 
