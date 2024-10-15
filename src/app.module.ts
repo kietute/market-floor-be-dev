@@ -58,7 +58,7 @@ import { AddressModule } from './addresses/addresses.module';
             Store,
             StoreProduct,
           ],
-          synchronize: process.env.NODE_ENV !== 'production',
+          synchronize: false,
           namingStrategy: new SnakeNamingStrategy(),
         };
       },
