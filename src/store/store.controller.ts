@@ -20,18 +20,17 @@ import { StoreDto } from './dtos/store.dto';
 import { AdminGuard } from '../common/guards/admin.guard'; // Import the Update DTO
 
 @Controller('/store')
+// @UseGuards(StaffGuard)
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
   @Post('/')
-  @UseGuards(AdminGuard)
   async createStore(@Body() body: CreateStoreDto) {
     const store = await this.storeService.createStore(body);
     return store;
   }
 
   @Get('/')
-  @UseGuards(AdminGuard)
   // @Serialize(StoreDto)
   async getStores(@Query() query: GetStoreDto) {
     const stores = await this.storeService.getStores(query);
@@ -39,20 +38,17 @@ export class StoreController {
   }
 
   @Get('/:id')
-  @UseGuards(AdminGuard)
   async getStoreById(@Param('id') id: number) {
     const store = await this.storeService.getStoreById(id);
     return store;
   }
 
   @Patch('/:id')
-  @UseGuards(AdminGuard)
   async updateStore(@Param('id') id: number, @Body() body: UpdateStoreDto) {
     return await this.storeService.update(id, body);
   }
 
   @Delete('/:id')
-  @UseGuards(AdminGuard)
   async removeStore(@Param('id') id: number) {
     return this.storeService.remove(id);
   }
