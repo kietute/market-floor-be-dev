@@ -33,7 +33,7 @@ export class StoreRepo {
     const queryBuilder = this.repo.createQueryBuilder('store');
 
     // Thêm join với bảng address
-    queryBuilder.leftJoinAndSelect('store.address', 'address'); // Thêm quan hệ 'address'
+    // queryBuilder.leftJoinAndSelect('store.address', 'address'); // Thêm quan hệ 'address'
 
     // filter if have name
     if (params.name) {

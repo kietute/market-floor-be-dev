@@ -38,7 +38,7 @@ export class Store {
   @Column({ nullable: true, type: 'float' })
   lat: number;
   @OneToOne(() => Address)
-  @JoinColumn({ name: 'address_id' }) // This specifies the foreign key column in the Store table
+  // @JoinColumn()
   address: Address;
 
   @OneToMany(() => StoreProduct, (storeProduct) => storeProduct.store)
