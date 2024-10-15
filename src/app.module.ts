@@ -58,7 +58,7 @@ import { StoreModule } from './store/store.module';
             Store,
             StoreProduct,
           ],
-          synchronize: true,
+          synchronize: false,
           namingStrategy: new SnakeNamingStrategy(),
         };
       },
