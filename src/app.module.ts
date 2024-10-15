@@ -58,7 +58,7 @@ import { StoreModule } from './store/store.module';
             Store,
             StoreProduct,
           ],
-          synchronize: process.env.NODE_ENV !== 'production',
+          synchronize: true,
           namingStrategy: new SnakeNamingStrategy(),
         };
       },
