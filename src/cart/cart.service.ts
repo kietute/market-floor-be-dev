@@ -6,6 +6,7 @@ import { CartDetail } from '../entities/cart-detail.entity';
 import { Product } from '../entities/product.entity';
 import { User } from '../entities/user.entity';
 import { AddProductToCartDto } from './dtos/add-product-to-cart.dto';
+import { ChangeQuantityDto } from './dtos/change-quantity.dto';
 
 @Injectable()
 export class CartService {
@@ -41,7 +42,24 @@ export class CartService {
 
     return this.cartDetailRepo.save(cartDetail);
   }
+  async changeQuantity(changeQuantityDto: ChangeQuantityDto) {
+    const cartDetail = await this.cartDetailRepo.findOne({
+      where: { id: changeQuantityDto.cartDetailId },
+      relations: ['product'],
+    });
 
+    if (!cartDetail) {
+      throw new Error('CartDetail not found');
+    }
+
+    cartDetail.quantity += changeQuantityDto.quantity; // Thay đổi số lượng
+
+    if (cartDetail.quantity < 0) {
+      cartDetail.quantity = 0; // Đảm bảo số lượng không âm
+    }
+
+    return this.cartDetailRepo.save(cartDetail);
+  }
   async getCartDetails(cartId: number) {
     return this.cartDetailRepo.find({
       where: { cart: { id: cartId } },
