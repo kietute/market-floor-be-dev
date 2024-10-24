@@ -23,6 +23,9 @@ import { Store } from './entities/store.entity';
 import { StoreProduct } from './entities/store-product.entity';
 import { StoreModule } from './store/store.module';
 import { AddressModule } from './addresses/addresses.module';
+import { Cart } from './entities/cart.entity';
+import { CartDetail } from './entities/cart-detail.entity';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -57,6 +60,8 @@ import { AddressModule } from './addresses/addresses.module';
             Tenant,
             Store,
             StoreProduct,
+            Cart,
+            CartDetail,
           ],
           synchronize: false,
           namingStrategy: new SnakeNamingStrategy(),
@@ -71,6 +76,7 @@ import { AddressModule } from './addresses/addresses.module';
     NotificationModule,
     TenantModule,
     StoreModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [
