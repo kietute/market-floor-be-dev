@@ -63,7 +63,7 @@ import { CartModule } from './cart/cart.module';
             Cart,
             CartDetail,
           ],
-          synchronize: false,
+          synchronize: true,
           namingStrategy: new SnakeNamingStrategy(),
         };
       },

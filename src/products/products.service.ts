@@ -5,13 +5,15 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { ProductRepo } from './products.repo';
-import { CreateProductDto, UpdateProductDto } from './dtos/product.dto';
+import { CreateProductDto, UpdateProductDto } from './dtos/create-product.dto';
 import { LinkProductDto } from './dtos/link-product.dto';
 import { StoreProductRepo } from './store-product.repo';
 import { StoreRepo } from 'src/store/store.repo';
 import {
+  GetProductDetailDto,
   GetStoreProductDto,
   GetTenentProductDto,
+  SearchProductDto,
 } from './dtos/get-product.dto';
 
 @Injectable()
@@ -25,7 +27,6 @@ export class ProductService {
   async createProduct(payload: CreateProductDto) {
     try {
       const product = await this.productRepo.create(payload);
-
       if (!product) {
         throw new ServiceUnavailableException(
           'Cannot create product at the moment',
@@ -52,7 +53,6 @@ export class ProductService {
           'Cannot update product at the moment',
         );
       }
-
       return updatedProduct;
     } catch (error) {
       console.log(error);
@@ -137,6 +137,26 @@ export class ProductService {
     } catch (error) {
       console.log('error getting store products', error);
       throw new ServiceUnavailableException('Error getting store products');
+    }
+  }
+
+  async getStoreProductById(payload: GetProductDetailDto) {
+    try {
+      const storeProduct = await this.storeProductRepo.findByUpc(
+        payload as any,
+      );
+      if (!storeProduct) {
+        throw new NotFoundException('Cannot find store product');
+      } else {
+        let relatedProducts = await this.getStoreProducts({
+          storeId: storeProduct.store.id,
+          category: storeProduct?.product?.category?.id,
+        });
+        return { storeProduct, relatedProducts: relatedProducts?.results };
+      }
+    } catch (error) {
+      console.log('error getting store product', error);
+      throw new ServiceUnavailableException('Error getting store product');
     }
   }
 }

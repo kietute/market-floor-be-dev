@@ -32,6 +32,10 @@ export class GetStoreProductDto {
   @IsNumber()
   @Min(1)
   pageSize?: number;
+
+  @IsOptional()
+  @IsString()
+  category?: number;
 }
 
 export class GetTenentProductDto {
@@ -56,4 +60,20 @@ export class GetTenentProductDto {
   @IsNumber()
   @Min(1)
   pageSize?: number;
+}
+
+export class SearchProductDto {
+  @IsOptional()
+  @IsString()
+  keyword: string;
+}
+
+export class GetProductDetailDto {
+  @Type(() => Number)
+  @IsNumber()
+  storeId: number;
+
+  @IsString()
+  @Type(() => String)
+  upc?: string;
 }

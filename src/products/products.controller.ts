@@ -9,14 +9,16 @@ import {
   Query,
   Delete,
 } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from './dtos/product.dto';
+import { CreateProductDto, UpdateProductDto } from './dtos/create-product.dto';
 import { ProductService } from './products.service';
 import { StaffGuard } from 'src/common/guards/staff.guard';
 import { LinkProductDto } from './dtos/link-product.dto';
 import { AdminGuard } from 'src/common/guards/admin.guard';
 import {
+  GetProductDetailDto,
   GetStoreProductDto,
   GetTenentProductDto,
+  SearchProductDto,
 } from './dtos/get-product.dto';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 
@@ -62,6 +64,12 @@ export class ProductsContoller {
   @Get('/by-store')
   async getProductsByStore(@Query() query: GetStoreProductDto) {
     const products = await this.productService.getStoreProducts(query);
+    return products;
+  }
+
+  @Get('/detail')
+  async getProductsByStoreId(@Query() query: GetProductDetailDto) {
+    const products = await this.productService.getStoreProductById(query);
     return products;
   }
 }
