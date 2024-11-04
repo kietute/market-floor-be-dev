@@ -21,7 +21,7 @@ export class CartController {
   @Post()
   @UseGuards(AuthGuard)
   async createCart(@CurrentUser() user: User) {
-    return this.cartService.createCart(user);
+    return this.cartService.createCart(user)
   }
 
   @Get()

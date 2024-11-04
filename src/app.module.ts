@@ -26,6 +26,9 @@ import { AddressModule } from './addresses/addresses.module';
 import { Cart } from './entities/cart.entity';
 import { CartDetail } from './entities/cart-detail.entity';
 import { CartModule } from './cart/cart.module';
+import { Comment } from './entities/comment.entity';
+import { OrderDetail } from './entities/order-detail.entity';
+import { Order } from './entities/order.entity';
 
 @Module({
   imports: [
@@ -62,8 +65,11 @@ import { CartModule } from './cart/cart.module';
             StoreProduct,
             Cart,
             CartDetail,
+            Comment,
+            Order,
+            OrderDetail,
           ],
-          synchronize: true,
+          synchronize: false,
           namingStrategy: new SnakeNamingStrategy(),
         };
       },

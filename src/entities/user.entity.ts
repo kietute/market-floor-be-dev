@@ -17,6 +17,7 @@ import { Address } from './address.entity';
 import { Store } from './store.entity';
 import { Cart } from './cart.entity';
 import { Comment } from './comment.entity';
+import { Order } from './order.entity';
 
 export enum UserRole {
   USER = 'user',
@@ -53,6 +54,8 @@ export class User {
   @OneToOne(() => Cart, { cascade: true }) // Thêm giỏ hàng (Cart) nếu cần
   @JoinColumn()
   cart: Cart;
+  @OneToMany(() => Order, (order) => order.user, { cascade: true })
+  orders: Order[];
   @Column({ default: false })
   isVerified: boolean;
 
