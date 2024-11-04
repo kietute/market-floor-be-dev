@@ -24,16 +24,25 @@ export class CartController {
     return this.cartService.createCart(user);
   }
 
-  @Post('/add-product')
+  @Get()
   @UseGuards(AuthGuard)
-  async addProductToCart(@Body() body: AddProductToCartDto) {
-    return this.cartService.addProductToCart(body);
+  async getCart(@CurrentUser() user: User) {
+    return this.cartService.getCart(user);
   }
 
-  @Get('/:id')
+  @Post('/add-product')
   @UseGuards(AuthGuard)
-  async getCartDetails(@Param('id') id: number) {
-    return this.cartService.getCartDetails(id);
+  async addProductToCart(
+    @Body() body: AddProductToCartDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.cartService.addProductToCart(body, user);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  async getCartDetails(@CurrentUser() currentUser) {
+    return this.cartService.getCartDetails(currentUser);
   }
 
   @Delete('/remove-product/:cartDetailId')

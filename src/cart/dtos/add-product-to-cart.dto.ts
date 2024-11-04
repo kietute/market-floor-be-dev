@@ -7,7 +7,6 @@ export class AddProductToCartDto {
   @IsNumber()
   cartId: number;
 
-  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   productId: number;

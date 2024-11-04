@@ -38,11 +38,6 @@ export class StoreProductRepo {
       );
     }
 
-    // if (categoryId) {
-    //   queryBuilder.andWhere('product.categoryId = :categoryId', {
-    //     categoryId: categoryId,
-    //   });
-    // }
   }
 
   async create(payload: any) {
