@@ -1,4 +1,12 @@
-import { Expose, Exclude } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+
+class StoreDto {
+  @Expose()
+  id: number;
+
+  @Expose()
+  name: string;
+}
 
 export class UserDto {
   @Expose()
@@ -14,6 +22,9 @@ export class UserDto {
   username: string;
 
   @Expose()
+  savePoints: number;
+
+  @Expose()
   firstName: string;
 
   @Expose()
@@ -24,6 +35,16 @@ export class UserDto {
 
   @Expose()
   role: string;
+
+  @Expose()
+  @Type(() => StoreDto)
+  store: StoreDto;
+
+  @Expose()
+  accessToken: string;
+
+  @Expose()
+  refreshToken: string;
 
   @Expose()
   addresses: Array<any>;

@@ -22,7 +22,6 @@ export class ProductRepo {
   }
 
   create(payload: CreateProductDto) {
-    console.log('payload', payload);
     const product = this.repo.create(payload as any);
     return this.repo.save(product);
   }
@@ -51,15 +50,11 @@ export class ProductRepo {
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category');
 
-    console.log('params', params);
-
     this.applyFilters(queryBuilder, params);
 
     const page = params.page ?? 1;
     const pageSize = params.pageSize ?? 10;
     const skip = (page - 1) * pageSize;
-
-    console.log(`Page: ${page}, PageSize: ${pageSize}, Skip: ${skip}`);
 
     const [results, total] = await queryBuilder
       .skip(skip)
@@ -74,12 +69,31 @@ export class ProductRepo {
     return { results, total, totalPage, categories };
   }
 
+  async findWithKeyword(keyword: string) {
+    return this.repo.find({
+      where: [
+        { name: keyword },
+        { fullDescription: keyword },
+        { shortDescription: keyword },
+      ],
+    });
+  }
+
   async update(id: number, attrs: UpdateProductDto) {
     const product = await this.findOne(id);
     if (!product) {
       throw new NotFoundException('Product not found');
     }
     Object.assign(product, attrs);
+    return this.repo.save(product);
+  }
+
+  async updateBuyCount(id: number) {
+    const product = await this.findOne(id);
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    product.buyCount += 1;
     return this.repo.save(product);
   }
 

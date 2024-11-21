@@ -3,12 +3,12 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Session,
   UseGuards,
 } from '@nestjs/common';
 import { Serialize } from '../common/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
-import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { SignInUserDto } from './dtos/sign-in-user.dto';
@@ -16,7 +16,6 @@ import { AuthGuard } from '../common/guards/auth.guard';
 import { User } from '../entities/user.entity';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { VerifyOtpDto } from './dtos/verify-otp.dto';
-import { makeLogger } from 'ts-loader/dist/logger';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -39,6 +38,15 @@ export class AuthController {
   async signin(@Body() body: SignInUserDto) {
     const user = await this.authService.signin(body);
     return user;
+  }
+
+  @Put('/profile')
+  @UseGuards(AuthGuard)
+  async updateProfile(
+    @CurrentUser() user: User,
+    @Body() body: { savePoints: number },
+  ) {
+    return this.authService.updateProfile(user.id, body);
   }
 
   @Post('/verify-otp')

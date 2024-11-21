@@ -12,11 +12,28 @@ export class UsersService {
     const user = this.repo.create(payload as User);
     return this.repo.save(user);
   }
+
   find(phoneNumber: string) {
-    return this.repo.findBy({ phoneNumber: phoneNumber });
+    return this.repo.find({
+      where: { phoneNumber: phoneNumber },
+      relations: ['store'],
+    });
   }
+
   findAll() {
-    return this.repo.find();
+    return this.repo.find({ relations: ['store'] });
+  }
+
+  findStaffByStoreId(storeId: number) {
+    return this.repo.find({
+      where: { store: { id: storeId }, role: UserRole.STAFF },
+    });
+  }
+
+  findUsersByStoreId(storeId: number) {
+    return this.repo.find({
+      where: { store: { id: storeId } },
+    });
   }
 
   findOne(id: number) {
@@ -26,14 +43,16 @@ export class UsersService {
     return this.repo.findOneBy({ id: id });
   }
 
-
-
   async update(id: number, attrs: Partial<User>) {
     const user = await this.findOne(id);
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('User not found');
     }
-    Object.assign(user, attrs);
+
+    const { password, ...updateAttrs } = attrs;
+
+    Object.assign(user, updateAttrs);
+
     return this.repo.save(user);
   }
 
@@ -55,5 +74,4 @@ export class UsersService {
   async findAllByRole(role: UserRole) {
     return this.repo.find({ where: { role } });
   }
-
 }

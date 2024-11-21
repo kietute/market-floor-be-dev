@@ -68,7 +68,7 @@ export class AuthService {
     //   const response = await this.otpService.sendOtpCode({
     //     phoneNumber: user.phoneNumber,
     //   });
-    //
+
     //   if (response) {
     //     throw new UnauthorizedException({
     //       errorCode: 410,
@@ -142,5 +142,20 @@ export class AuthService {
     });
 
     return notifyResponse;
+  }
+
+  async updateProfile(id: number, payload: { savePoints: number }) {
+    const { savePoints } = payload;
+    const user = await this.userUservice.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const updatedUser = await this.userUservice.update(user.id, {
+      ...payload,
+    });
+
+    return updatedUser;
   }
 }

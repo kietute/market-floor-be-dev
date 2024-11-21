@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { Category } from './category.entity';
 import { StoreProduct } from './store-product.entity';
+import { Comment } from './comment.entity';
+import { OrderDetail } from './order-detail.entity';
 
 export interface IProductPrice {
   price: number;
@@ -59,8 +61,14 @@ export class Product {
   @Column({ default: true })
   isAvailable: boolean;
 
+  @Column({ default: 0, name: 'buy_count' })
+  buyCount: number;
+
   @OneToMany(() => StoreProduct, (storeProduct) => storeProduct.product)
   storeProducts: StoreProduct[];
+
+  @OneToMany(() => Comment, (comment) => comment.product)
+  comments: Comment[];
 
   @Column({ nullable: true })
   @CreateDateColumn()
@@ -69,4 +77,7 @@ export class Product {
   @Column({ nullable: true })
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
+  orderDetails: OrderDetail[];
 }

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
 import { Address } from './address.entity';
 import { StoreProduct } from './store-product.entity';
 import { User } from './user.entity';
+import { Order } from './order.entity';
 
 @Entity()
 export class Store {
@@ -36,7 +38,8 @@ export class Store {
 
   @Column({ nullable: true, type: 'float' })
   lat: number;
-  @OneToOne(() => Address, (address) => address.store)
+  @OneToOne(() => Address)
+  // @JoinColumn()
   address: Address;
 
   @OneToMany(() => StoreProduct, (storeProduct) => storeProduct.store)
@@ -44,4 +47,7 @@ export class Store {
 
   @OneToMany(() => User, (user) => user.store)
   staffs: User[];
+
+  @OneToMany(() => Order, (order) => order.store)
+  orders: Store[];
 }

@@ -7,7 +7,9 @@ export class StaffGuard implements CanActivate {
       return false;
     }
     return (
-      request.currentUser.role == 'staff' || request.currentUser.role == 'admin'
+      request.currentUser.role == 'staff' ||
+      request.currentUser.role == 'admin' ||
+      request.currentUser.role == 'manager'
     );
   }
 }

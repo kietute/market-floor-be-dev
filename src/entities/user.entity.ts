@@ -9,14 +9,20 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { UserDevice } from './user-device.entity';
 import { Address } from './address.entity';
 import { Store } from './store.entity';
+import { Cart } from './cart.entity';
+import { Comment } from './comment.entity';
+import { Order } from './order.entity';
 
 export enum UserRole {
   USER = 'user',
   STAFF = 'staff',
+  MANAGER = 'manager',
   ADMIN = 'admin',
 }
 
@@ -37,6 +43,9 @@ export class User {
   @Column()
   lastName: string;
 
+  @Column({ default: 10, nullable: true })
+  savePoints: number;
+
   @Column()
   email: string;
 
@@ -45,6 +54,10 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToOne(() => Cart, { cascade: true }) // Thêm giỏ hàng (Cart) nếu cần
+  @JoinColumn()
+  cart: Cart;
 
   @Column({ default: false })
   isVerified: boolean;
@@ -71,18 +84,9 @@ export class User {
   @ManyToOne(() => Store, (store) => store.staffs)
   store: Store;
 
-  @AfterInsert()
-  logInsert() {
-    console.log('Inserted User with id', this.id);
-  }
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 
-  @AfterUpdate()
-  logUpdate() {
-    console.log('Updated User with id', this.id);
-  }
-
-  @AfterRemove()
-  logRemove() {
-    console.log('Removed User with id', this.id);
-  }
+  @OneToMany(() => Order, (order) => order.user, { cascade: true })
+  orders: Order[];
 }

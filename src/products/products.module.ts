@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Injectable, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from 'src/entities/product.entity';
 import { ProductsContoller } from './products.controller';
@@ -11,10 +11,13 @@ import { Category } from 'src/entities/category.entity';
 import { CategoryRepo } from './category.repo';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
+import { CommentService } from './comment.service';
+import { Comment } from 'src/entities/comment.entity';
+import { CommentRepo } from './comment.repo';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product, StoreProduct, Category]),
+    TypeOrmModule.forFeature([Product, StoreProduct, Category, Comment]),
     StoreModule,
   ],
   controllers: [ProductsContoller, CategoryController],
@@ -24,6 +27,9 @@ import { CategoryService } from './category.service';
     StoreProductRepo,
     CategoryRepo,
     CategoryService,
+    CommentService,
+    CommentRepo,
   ],
+  exports: [ProductService, ProductRepo, StoreProductRepo, CategoryService],
 })
 export class ProductsModule {}
